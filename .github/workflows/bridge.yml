@@ -1,0 +1,33 @@
+name: Build bridge
+
+on:
+  push:
+    tags: ['bridge-v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -B build -G Xcode -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" bridge
+      - name: Build
+        run: cmake --build build --config Release -- -quiet
+      - name: Package
+        run: |
+          cd build/wasmvst-bridge_artefacts/Release
+          codesign --force --deep -s - wasmvst-bridge.app
+          ditto -c -k --keepParent wasmvst-bridge.app "$GITHUB_WORKSPACE/wasmvst-bridge-macos.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wasmvst-bridge-macos
+          path: wasmvst-bridge-macos.zip
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: wasmvst-bridge-macos.zip

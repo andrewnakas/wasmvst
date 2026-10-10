@@ -1,0 +1,20 @@
+{
+  "name": "wasmvst",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@webaudiomodules/api": "^2.0.0-alpha.6",
+    "coi-serviceworker": "^0.1.7",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  },
+  "dependencies": {
+    "@webaudiomodules/sdk": "^0.0.12"
+  }
+}
