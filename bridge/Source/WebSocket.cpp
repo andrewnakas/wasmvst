@@ -1,4 +1,7 @@
 #include "WebSocket.h"
+#if JUCE_MAC
+ #include <sys/socket.h>
+#endif
 
 namespace sha1
 {
@@ -49,6 +52,10 @@ namespace sha1
 WebSocketConnection::WebSocketConnection (std::unique_ptr<juce::StreamingSocket> s)
     : socket (std::move (s))
 {
+   #if JUCE_MAC
+    int one = 1;
+    setsockopt (socket->getRawSocketHandle(), SOL_SOCKET, SO_NOSIGPIPE, &one, sizeof (one));
+   #endif
 }
 
 bool WebSocketConnection::readExact (void* dest, size_t bytes)

@@ -1,4 +1,5 @@
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <csignal>
 #include "BridgeServer.h"
 #include "Protocol.h"
 
@@ -115,6 +116,9 @@ public:
 
     void initialise (const juce::String& commandLine) override
     {
+        // A page closing mid-write must not kill the bridge (writes to a closed socket raise SIGPIPE).
+        std::signal (SIGPIPE, SIG_IGN);
+
         // --allow-origin https://example.com (repeatable) to permit other hosts of the web app.
         juce::StringArray extra, args;
         args.addTokens (commandLine, true);

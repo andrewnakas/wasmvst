@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(wasmvst_bridge VERSION 0.1.0 LANGUAGES C CXX OBJC OBJCXX)
+project(wasmvst_bridge VERSION 0.1.1 LANGUAGES C CXX OBJC OBJCXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "")
